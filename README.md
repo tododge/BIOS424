@@ -38,16 +38,18 @@ If you feel competent and wish to install these programs in a different way, we'
 
 You can install both conda and mamba through miniforge from here: https://github.com/conda-forge/miniforge
 
+Conda environments with a bunch of packages can take up a fair amount of space. I would recommend installing conda into a personal directory in your `$GROUP_HOME` if possible.
+
 Here are the basic installation commands for linux (Sherlock). See the link for more info:
 ```
 wget -O Miniforge3.sh "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
-bash Miniforge3.sh -b -p "${HOME}/conda"
+bash Miniforge3.sh -b -p "${GROUP_HOME}/[personal_dir]/conda" #change [personal_dir] to whatever you use
 ```
 You'll then want to add `conda` and `mamba` to your `$PATH` so that you can run them from wherever. Paste the following into `~/.bash_profile`
 ```
-# add conda to path
-if [ -d "$HOME/conda" ] ; then
-    PATH="$HOME/conda/condabin:$PATH"
+# add conda to path. Change [personal_dir] to whatever you used on the installation.
+if [ -d "${GROUP_HOME}/[personal_dir]/conda" ] ; then
+    PATH="${GROUP_HOME}/[personal_dir]/conda/condabin:$PATH"
 fi
 ```
 Either `source ~/.bash_profile` or restart your terminal window. Typing `conda` and `mamba` should now give help messages.
