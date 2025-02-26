@@ -1,13 +1,6 @@
 # Lab 1
 Once we have successfully completed a nanopore sequencing run, we will have to perform super accuracy basecalling on our raw nanopore data. To do this, we will run Dorado on Sherlock's gpu nodes.
 
-First, clone this github repo somewhere you can easily access on Sherlock. (I would recommend `$SCRATCH`; it's what all the scripts will assume).
-```
-cd $SCRATCH
-git clone https://github.com/jahemker/BIOS424/
-cd BIOS424/
-```
-
 Move into the `lab_one` folder and make a new directory named `dmel1`, which is the name of the sample we will be basecalling. Make another directory in `dmel1` called `pod5`, which is where we will store our data.
 ```
 cd lab_one/
