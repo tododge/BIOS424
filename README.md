@@ -3,30 +3,12 @@ This is a repo that will house the scripts we use in BIOS424 (Structural Variati
 
 The goals of the labs for this class are to walk through generation of long-read sequencing data, calling of structural variants, and analysis of structural variants.
 
-## Lab 1 - Long-read sequencing with Oxford Nanopore Technologies (ONT)
-In this first lab we will explore an ONT long-read sequencing protocol for Drosophila melanogaster.
-We will walk through the each step of the protocol, then we will practice loading nanopore flow cells with a dummy library.
-We will look at ONT's sequencing software, Minknow, to see how we can evaluate our sequencing runs.
-We will finally end with a foray into computational work, basecalling our sequencing data.
-
-- Input: Sample
-
-- Output: Basecalled reads data from sequencing run.
-
-The protocol we will be following is based off of:
-
-https://elifesciences.org/articles/66405
-
-https://nanoporetech.com/document/genomic-dna-by-ligation-sqk-lsk114?device=PromethION
-
-For basecalling, we will be using Dorado, which is Nanopore's open-source basecaller.
-
-https://github.com/nanoporetech/dorado
-
 ### Computing in BIOS424
 In order to keep everything consistent for the computational parts of the labs, we are going to assume everyone will be working on the Sherlock computing cluster.
 
-If you do not have access to Sherlock please let us know and we can try and think of a workaround.
+If you do not have access to Sherlock please let us know and we can try to come up with a workaround.
+
+I've tried to clearly write out all of the commands we will be using for anyone who is not very comfortable with bash or Sherlock.
 
 Additionally, we will be using a conda environment to conveniently hold all of the various programs (and their dependencies) that we will be using. If you do not have conda (and mamba) installed on Sherlock, please do so before class if possible.
 
@@ -54,6 +36,34 @@ fi
 ```
 Either `source ~/.bash_profile` or restart your terminal window. Typing `conda` and `mamba` should now give help messages.
 
+Now, we want to all have the same conda environment with all the necessary programs. First, clone this github repo somewhere you can easily access on Sherlock. (I would recommend `$SCRATCH`; it's what all the scripts will assume). Move into the directory and we will now create a new conda environment from the supplied `environment.yml` file. It will probably take a little while (10-15 minutes) to download everything that's needed. Whenever it finishes, activate the new environment.
+```
+cd $SCRATCH
+git clone https://github.com/jahemker/BIOS424/
+cd BIOS424/
+mamba env create -n BIOS424 -f environment.yml
+conda activate BIOS424
+```
+
+## Lab 1 - Long-read sequencing with Oxford Nanopore Technologies (ONT)
+In this first lab we will explore an ONT long-read sequencing protocol for Drosophila melanogaster.
+We will walk through the each step of the protocol, then we will practice loading nanopore flow cells with a dummy library.
+We will look at ONT's sequencing software, Minknow, to see how we can evaluate our sequencing runs.
+We will finally end with a foray into computational work, basecalling our sequencing data.
+
+- Input: Sample
+
+- Output: Basecalled reads data from sequencing run.
+
+The protocol we will be following is based off of:
+
+https://elifesciences.org/articles/66405
+
+https://nanoporetech.com/document/genomic-dna-by-ligation-sqk-lsk114?device=PromethION
+
+For basecalling, we will be using Dorado, which is Nanopore's open-source basecaller.
+
+https://github.com/nanoporetech/dorado
 
 ## Lab 2 - Genome assembly and long-read + assembly alignment to reference; Structural variant calling
 The second lab class will focus on computationally generating our long reads, assembling them into full genomes, aligning to a reference genome, and calling SVs.
