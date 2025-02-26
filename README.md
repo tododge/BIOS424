@@ -23,6 +23,36 @@ For basecalling, we will be using Dorado, which is Nanopore's open-source baseca
 
 https://github.com/nanoporetech/dorado
 
+### Computing in BIOS424
+In order to keep everything consistent for the computational parts of the labs, we are going to assume everyone will be working on the Sherlock computing cluster.
+
+If you do not have access to Sherlock please let us know and we can try and think of a workaround.
+
+Additionally, we will be using a conda environment to conveniently hold all of the various programs (and their dependencies) that we will be using. If you do not have conda (and mamba) installed on Sherlock, please do so before class if possible.
+
+Mamba will allow you to download all the packages much faster than conda does.
+
+If you feel competent and wish to install these programs in a different way, we've listed everything out that we are planning on using, so feel free to do so.
+
+---
+
+You can install both conda and mamba through miniforge from here: https://github.com/conda-forge/miniforge
+
+Here are the basic installation commands for linux (Sherlock). See the link for more info:
+```
+wget -O Miniforge3.sh "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+bash Miniforge3.sh -b -p "${HOME}/conda"
+```
+You'll then want to add `conda` and `mamba` to your `$PATH` so that you can run them from wherever. Paste the following into `~/.bash_profile`
+```
+# add conda to path
+if [ -d "$HOME/conda" ] ; then
+    PATH="$HOME/conda/condabin:$PATH"
+fi
+```
+Either `source ~/.bash_profile` or restart your terminal window. Typing `conda` and `mamba` should now give help messages.
+
+
 ## Lab 2 - Genome assembly and long-read + assembly alignment to reference; Structural variant calling
 The second lab class will focus on computationally generating our long reads, assembling them into full genomes, aligning to a reference genome, and calling SVs.
 We will perform all of our computational work on Sherlock, Stanford's high-performance computing cluster for bioscience labs. In reality, the computational steps can take days to run, so we have already generated all starting, intermediate, and final files.
