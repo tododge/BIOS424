@@ -36,7 +36,7 @@ fi
 ```
 Either `source ~/.bash_profile` or restart your terminal window. Typing `conda` and `mamba` should now give help messages.
 
-Now, we want to all have the same conda environment with all the necessary programs. First, clone this github repo somewhere you can easily access on Sherlock. (I would recommend `$SCRATCH`; it's what all the scripts will assume). Move into the directory and we will now create a new conda environment from the supplied `environment.yml` file. It will probably take a little while (10-15 minutes) to download everything that's needed. Whenever it finishes, activate the new environment.
+Now, we want to all have the same conda environment with all the necessary programs. First, clone this github repo somewhere you can easily access on Sherlock. (I would recommend `$SCRATCH`; it's what all the scripts will assume). Move into the directory and we will now create a new conda environment from the supplied `environment.yml` file. It will probably take a little while (5-10 minutes with mamba) to download everything that's needed. Whenever it finishes, activate the new environment.
 ```
 cd $SCRATCH
 git clone https://github.com/jahemker/BIOS424/
