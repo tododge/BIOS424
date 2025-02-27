@@ -17,7 +17,7 @@ conda activate BIOS424
 #Set up variables to directories
 species="dmel1"
 speciespath="$SCRATCH/BIOS424/lab_one/${species}/"
-fastq="$SCRATCH/BIOS424/${species}/${species}.dorado.fastq.gz"
+fastq="$SCRATCH/BIOS424/lab_one/${species}/${species}.dorado.fastq.gz"
 
 # Prepare basecalling directory by downloading model if it doesn't exist
 # Will check that model exists before downloading
