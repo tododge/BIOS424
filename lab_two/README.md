@@ -11,7 +11,7 @@ We will additionally call structural variants with two different callers, [Sniff
 - `Sniffles2` will use our reads aligned to the reference.
 - `svim-asm` will use our assembly aligned to the reference. (We may or may not get to using svim-asm, depending on time and how quickly assembly goes, however you should be able to follow the instructions here after the fact and do it yourself, if you want).
 
-### Note
+### Notes
 
 The reason we can use such a simple assembly workflow is because our sequencing data is ONT R.10.4.1, basecalled with the v5 super accuracy model. With less accurate long reads, you would probably want to do additional steps such as read polishing.
 
@@ -122,4 +122,56 @@ Now we can run ragtag
 cd $SCRATCH/BIOS424/lab_two
 sbatch --mail-user=[your@email.com] scripts/submit_ragtag.sh
 ```
+The ragtag output will be in the `ragtag/` directory. The file we care about is `2L.scaffolded.fasta`. We can check the stats of the scaffolded assembly, and we should find that there are only a few contigs, with one being extremely long. The stats should look like:
+```
+# number of contigs:     11
+# total contigs length:  27448483
+# mean contig size:      2495316.64
+# contig size first quartile: 193563
+# median contig size:         470274
+# contig size third quartile: 728259
+# longest contig:             23922314
+# shortest contig:            84909
+# contigs > 500 nt:           11 (100.00 %)
+# contigs > 1K nt:            11 (100.00 %)
+# contigs > 10K nt:           11 (100.00 %)
+# contigs > 100K nt:          9 (81.82 %)
+# contigs > 1M nt:            1 (9.09 %)
+# N50                23922314
+# L50                1
+# N80                23922314
+# L80                1
+```
+Our longest contig is 23.9Mb long, about .5MB longer than the reference 2L chromosome. We can double check that indeed RagTag aligned this contig to the 2L chromosome by looking at all of the contigs (which are now named by which reference contig they were scaffolded to). `samtools faidx` will create an index file for a fasta, which allows us to easily see contig lengths.
+```
+cd $SCRATCH/BIOS424/lab_two/ragtag/
+samtools faidx 2L.scaffolded.fasta
+cut -f-2 2L.scaffolded.fasta.fai | sort -nrk 2
+```
+This will output the bp length of each contig in `2L.scaffolded.fasta`:
+```
+2L	23922314
+3L	728259
+2R	719145
+3R	551615
+ptg000033l_1	470274
+X	426731
+ptg000001l_1	193563
+ptg000024l_1	136059
+3Cen_mapped_Scaffold_36_D1605	124935
+211000022280470	90679
+211000022278845	84909
+```
+We can clearly see that our longest contig does in fact scaffold to 2L. Notice how we have 10 other smaller contigs that were scaffolded to other chromosomes/contigs in the D. melanogaster reference.
+
+We can now use this assembly of 2L to call structural variants with assembly aligners. It's important to remember that while we have 10 other contigs in our fasta file as well, we know our reads are from 2L. We can further filter the fasta file to only include the sequence of 2L. We will use this fasta file for SV calling in the next part.
+
+```
+cd $SCRATCH/BIOS424/lab_two/
+samtools faidx ragtag/2L.scaffolded.fasta 2L > 2L.fasta
+```
+
+---
+
+## Calling structural variants from read alignments with Sniffles2
 
