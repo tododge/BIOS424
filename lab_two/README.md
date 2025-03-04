@@ -173,5 +173,16 @@ samtools faidx ragtag/2L.scaffolded.fasta 2L > 2L.fasta
 
 ---
 
-## Calling structural variants from read alignments with Sniffles2
+## Calling structural variants
 
+To call structural variants, we first need to make the read and assembly alignments. We will use the same set of reads we downloaded earlier as well as the 2L assembly we just made and align them to the same reference genome. We will use the program `minimap2` for both read alignment and assembly alignment. There are separate scripts for each alignment type.
+```
+cd $SCRATCH/BIOS424/lab_two
+sbatch --mail-user=[your@email.com] scripts/submit_read_alignment.sh
+sbatch --mail-user=[your@email.com] scripts/submit_assembly_alignment.sh
+```
+Our output will be `.bam` files in the `alignments/` directory. I've also included the `.sam` file outputs as well, if you want to look at them, but they won't be used in the rest of the workflow.
+
+### Calling SVs from reads with Sniffles2
+
+Sniffles2 is a popular SV caller with many different features and options.
