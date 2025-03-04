@@ -21,9 +21,28 @@ There are a huge number of SV callers we could have chosen to use today. I chose
 
 ---
 
+### Assemblying with hifiasm
+
 First on Sherlock, pull from github the updated version of this folder.
 
 ```
 cd $SCRATCH/BIOS424 #or wherever you cloned it last lab.
 git pull
 ```
+Next, [download this fastq file](https://drive.google.com/file/d/1LIipMBVFH-UM6RJXn4VOfVPrlHVsk365/view?usp=drive_link), which holds the reads for one D. melanogaster chromosome (2L), and upload it to Sherlock.
+```
+#you may have to change the first part depending on where you downloaded the file to
+scp ~/Downloads/2L.fastq.gz [suid]@dtn.sherlock.stanford.edu:$SCRATCH/BIOS424/lab_two/reads
+```
+
+We can now go into the `lab_two` folder and submit our hifiasm script to Sherlock. The `--mail-user` option will allow Sherlock to send you an email when your job starts/stops/fails.
+```
+cd $SCRATCH/BIOS424/lab_two
+sbatch --mail-user=[your@email.com] scripts/submit_hifiasm.sh
+```
+
+Once the job has finished, you should be able to see a bunch of files in the `assembly/` directory that start with `2L.hifiasm.bp.*`. We are going to focus on the file `2L.hifiasm.bp.p_ctg.gfa`, which is the graph assembly file of the primary contigs. We will first convert this file to a fasta file using the simple command `awk '/^S/{print ">"$2;print $3}' 2L.hifiasm.bp.p_ctg.gfa > 2L.hifiasm.bp.p_ctg.fasta`. 
+
+### Purging haplodups with purge_dups
+
+Haplotypic dupications are assembly artifacts that can occur in unphased genomes when there is a region of high heterozygosity. The assembler does not recognize the heterozygous region not as different haplotypes of the same region. Instead, it believes that it is two, slightly diverged copies of the same region. Both heterozygous haplotypes are assembled, when in reality the assembler should have chosen only one. purge_dups is a program that will scan the genome for these incorrect haplotypic duplications and remove one of the "copies".
