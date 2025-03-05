@@ -35,10 +35,10 @@ Next, [download this fastq file](https://drive.google.com/file/d/1LIipMBVFH-UM6R
 scp ~/Downloads/2L.fastq.gz [suid]@dtn.sherlock.stanford.edu:$SCRATCH/BIOS424/lab_two/reads
 ```
 
-We can now go into the `lab_two` folder and submit our hifiasm script to Sherlock. The `--mail-user` option will allow Sherlock to send you an email when your job starts/stops/fails.
+We can now go into the `lab_two` folder and submit our hifiasm script to Sherlock. Sherlock will send you an email when your job starts/stops/fails.
 ```
 cd $SCRATCH/BIOS424/lab_two
-sbatch --mail-user=[your@email.com] scripts/submit_hifiasm.sh
+sbatch scripts/submit_hifiasm.sh
 ```
 
 Once the job has finished, you should be able to see a bunch of files in the `assembly/` directory that start with `2L.hifiasm.bp.*`. We are going to focus on the file `2L.hifiasm.bp.p_ctg.gfa`, which is the graph assembly file of the primary contigs. We will first convert this file to a fasta file using an awk command. We can then look at basic stats about our assembly using the tool `gt seqstat`. 
@@ -79,7 +79,7 @@ Haplotypic dupications are assembly artifacts that can occur in unphased genomes
 We can purge any potential haplotypic duplications from our hifiasm assembly. 
 ```
 cd $SCRATCH/BIOS424/lab_two
-sbatch --mail-user=[your@email.com] scripts/submit_purgedups.sh
+sbatch scripts/submit_purgedups.sh
 ```
 
 After the job completes, there will be multiple files in the `purge/` directory. The relevant file for us is `2L.purged.fa`, which is our fasta file without haplodups. We can now check the size of our assembly again.
@@ -115,12 +115,12 @@ We now have a number of contigs. If our data had been high-enough quality, we co
 
 First we have to download the reference D.melanogaster assembly. (You can check its stats the same way we've checked our fasta files. Notice that there are a huge number of contigs. These are all small fragments that are part of the genome, but its unclear where they should be assembled.)
 ```
-wget -O D.melanogaster.fa https://ftp.flybase.net/genomes/Drosophila_melanogaster/dmel_r6.58_FB2024_03/fasta/dmel-all-chromosome-r6.58.fasta.gz
+wget -O-  https://ftp.flybase.net/genomes/Drosophila_melanogaster/dmel_r6.58_FB2024_03/fasta/dmel-all-chromosome-r6.58.fasta.gz | gunzip > D.melanogaster.fa.gz
 ```
 Now we can run ragtag
 ```
 cd $SCRATCH/BIOS424/lab_two
-sbatch --mail-user=[your@email.com] scripts/submit_ragtag.sh
+sbatch scripts/submit_ragtag.sh
 ```
 The ragtag output will be in the `ragtag/` directory. The file we care about is `2L.scaffolded.fasta`. We can check the stats of the scaffolded assembly, and we should find that there are only a few contigs, with one being extremely long. The stats should look like:
 ```
@@ -178,11 +178,25 @@ samtools faidx ragtag/2L.scaffolded.fasta 2L > 2L.fasta
 To call structural variants, we first need to make the read and assembly alignments. We will use the same set of reads we downloaded earlier as well as the 2L assembly we just made and align them to the same reference genome. We will use the program `minimap2` for both read alignment and assembly alignment. There are separate scripts for each alignment type.
 ```
 cd $SCRATCH/BIOS424/lab_two
-sbatch --mail-user=[your@email.com] scripts/submit_read_alignment.sh
-sbatch --mail-user=[your@email.com] scripts/submit_assembly_alignment.sh
+sbatch scripts/submit_read_alignment.sh
+sbatch scripts/submit_assembly_alignment.sh
 ```
 Our output will be `.bam` files in the `alignments/` directory. I've also included the `.sam` file outputs as well, if you want to look at them, but they won't be used in the rest of the workflow.
 
 ### Calling SVs from reads with Sniffles2
 
-Sniffles2 is a popular SV caller with many different features and options.
+We need to give sniffles the bam file with our read alignments, as well as the reference genome we used to make the bam file. There are a bunch of parameters we can set, but we will only explicitly set two of them. First we are going to require a minimum SV length of 50bp, and second we are going to tell sniffles to only look at read alignments that have a minimum mapping quality score of 20.
+```
+cd $SCRATCH/BIOS424/lab_two
+sbatch scripts/submit_sniffles.sh
+```
+The resulting output, `2L.sniffles2.vcf` can be found in the `sniffles2` directory.
+
+### Calling SVs from assembly with svim-asm
+
+We need to give svim-asm our assembly alignment and the reference assembly. We will set the minimum SV length and minimum mapping quality to be the same as sniffles, 50 and 20, respectively.
+```
+cd $SCRATCH/BIOS424/lab_two
+sbatch scripts/submit_svim-asm.sh
+```
+The output will be in `svim-asm/`, and we care about the file `2L.svim-asm.vcf`.
