@@ -74,28 +74,7 @@ In lab we will work on learning how to run these programs on Sherlock.
 
 - Output: Base-called reads (FASTQ files), genome assemblies (FASTA files), alignments (BAM files), structural variant calls (VCFs)
 
-Todo for James:
-- Make a singularity image that holds all of the necessary programs and dependencies
-- For genome assembly:
-  - Flye https://github.com/mikolmogorov/Flye conda
-  - purgedups https://github.com/dfguan/purge_dups conda
-  - medaka https://github.com/nanoporetech/medaka conda
-  - NCBI Foreign Contamination Screen https://github.com/ncbi/fcs
-  - RagTag https://github.com/malonge/RagTag conda
-  - RepeatModeler + RepeatMasker https://github.com/Dfam-consortium/RepeatModeler + https://github.com/Dfam-consortium/RepeatMasker conda
-  - QC Tools
-    - compleasm https://github.com/huangnengCSU/compleasm conda
-    - genometools https://github.com/genometools/genometools conda
-    - seqkit https://github.com/shenwei356/seqkit conda
-- For alignment (this can be in conda env):
-  - minimap2 https://github.com/lh3/minimap2
-  - samtools https://github.com/samtools/samtools
-- For SV Calling (this can all be in a conda env):
-  - sniffles2 https://github.com/fritzsedlazeck/Sniffles
-  - cuteSV https://github.com/tjiangHIT/cuteSV
-  - svim-asm https://github.com/eldariont/svim-asm
-  - Jasmine https://github.com/mkirsche/Jasmine
-  - bcftools https://github.com/samtools/bcftools
+For detailed steps, refer to the readme in the `lab_two/` folder.
 
 ## Lab 3 - Structural variant QC and analysis
 In this final lab, we will be looking at our SV calls that we generated in the previous lab. We will manually verify SVs looking at read alignments. We will perform some basic analyses with our VCFs.
