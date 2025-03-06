@@ -111,7 +111,7 @@ Now, we've dropped about 7Mb of sequence from erroneous haplodups. There is stil
 
 ## Scaffolding contigs with RagTag
 
-We now have a number of contigs. If our data had been high-enough quality, we could have potentially already assembled the full 2R chromosome. However, we can see that our largest contig is still only XXMb, which is well short of the known chromosome length. Now we will assembly our chromosomes into scaffolds. We don't have any more data to use (like Hi-C), so we have to scaffold against the reference D.melanogaster genome. Unfortunately, this means that our assembly will no longer be truly "de novo", but we were able to assemble large chunks of the chromosome de novo. To scaffold, we will use the program RagTag.
+We now have a number of contigs. If our data had been high-enough quality, we could have potentially already assembled the full 2R chromosome. However, we can see that our largest contig is still only 21Mb, which is  short of the known chromosome length. Now we will assembly our chromosomes into scaffolds. We don't have any more data to use (like Hi-C), so we have to scaffold against the reference D.melanogaster genome. Unfortunately, this means that our assembly will no longer be truly "de novo", but we were able to assemble large chunks of the chromosome de novo. To scaffold, we will use the program RagTag.
 
 First we have to download the reference D.melanogaster assembly. (You can check its stats the same way we've checked our fasta files. Notice that there are a huge number of contigs. These are all small fragments that are part of the genome, but its unclear where they should be assembled.)
 ```
@@ -142,7 +142,7 @@ The ragtag output will be in the `ragtag/` directory. The file we care about is 
 # N80                1864736
 # L80                3
 ```
-We can double check that indeed RagTag aligned this contig to the 2R chromosome by looking at all of the contigs (which are now named by which reference contig they were scaffolded to). `samtools faidx` will create an index file for a fasta, which allows us to easily see contig lengths.
+We were able to combine contigs and add on another 2Mb to our largest contig. We can double check that indeed RagTag aligned this contig to the 2R chromosome by looking at all of the contigs (which are now named by which reference contig they were scaffolded to). `samtools faidx` will create an index file for a fasta, which allows us to easily see contig lengths.
 ```
 cd $SCRATCH/BIOS424/lab_two/ragtag/
 samtools faidx 2R.scaffolded.fasta
@@ -196,3 +196,5 @@ cd $SCRATCH/BIOS424/lab_two
 sbatch scripts/submit_svim-asm.sh
 ```
 The output will be in `svim-asm/`, and we care about the file `2R.svim-asm.vcf`.
+
+Depending on the time at this point, we will either start looking at the vcfs, or we will save that for lab next week. The best tool for parsing VCFs is `bcftools`. Feel free to look it up and see what it can do. 
