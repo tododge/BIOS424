@@ -29,47 +29,47 @@ First on Sherlock, pull from github the updated version of this folder.
 cd $SCRATCH/BIOS424 #or wherever you cloned it last lab.
 git pull
 ```
-Next, [download this fastq file](https://drive.google.com/file/d/1LIipMBVFH-UM6RJXn4VOfVPrlHVsk365/view?usp=drive_link), which holds the reads for one D. melanogaster chromosome (2L), and upload it to Sherlock.
+Next, [download this fastq file](https://drive.google.com/file/d/1IkBvaqBol3XBv1x8wT8im7HeYMK-3yWK/view?usp=sharing), which holds the reads for one D. melanogaster chromosome (2R), and upload it to Sherlock.
 ```
 #you may have to change the first part depending on where you downloaded the file to
-scp ~/Downloads/2L.fastq.gz [suid]@dtn.sherlock.stanford.edu:$SCRATCH/BIOS424/lab_two/reads
+scp ~/Downloads/2R.fastq.gz [suid]@dtn.sherlock.stanford.edu:$SCRATCH/BIOS424/lab_two/reads
 ```
 
 We can now go into the `lab_two` folder and submit our hifiasm script to Sherlock. Sherlock will send you an email when your job starts/stops/fails.
 ```
 cd $SCRATCH/BIOS424/lab_two
-sbatch scripts/submit_hifiasm.sh
+sbatch scripts/submit_hifiasm.sh #should take about 15 minutes
 ```
 
-Once the job has finished, you should be able to see a bunch of files in the `assembly/` directory that start with `2L.hifiasm.bp.*`. We are going to focus on the file `2L.hifiasm.bp.p_ctg.gfa`, which is the graph assembly file of the primary contigs. We will first convert this file to a fasta file using an awk command. We can then look at basic stats about our assembly using the tool `gt seqstat`. 
+Once the job has finished, you should be able to see a bunch of files in the `assembly/` directory that start with `2R.hifiasm.bp.*`. We are going to focus on the file `2R.hifiasm.bp.p_ctg.gfa`, which is the graph assembly file of the primary contigs. We will first convert this file to a fasta file using an awk command. We can then look at basic stats about our assembly using the tool `gt seqstat`. 
 
 ```
 cd $SCRATCH/BIOS424/lab_two/assembly/
-awk '/^S/{print ">"$2;print $3}' 2L.hifiasm.bp.p_ctg.gfa > 2L.hifiasm.bp.p_ctg.fasta
-gt seqstat assembly/2L.hifiasm.bp.p_ctg.fasta
+awk '/^S/{print ">"$2;print $3}' 2R.hifiasm.bp.p_ctg.gfa > 2R.hifiasm.bp.p_ctg.fasta
+gt seqstat 2R.hifiasm.bp.p_ctg.fasta
 ```
 
 (Hopefully) the `gt seqstat` output looks like:
 ```
-# number of contigs:     42
-# total contigs length:  34972702
-# mean contig size:      832683.38
-# contig size first quartile: 130618
-# median contig size:         193803
-# contig size third quartile: 469105
-# longest contig:             15568587
-# shortest contig:            84909
-# contigs > 500 nt:           42 (100.00 %)
-# contigs > 1K nt:            42 (100.00 %)
-# contigs > 10K nt:           42 (100.00 %)
-# contigs > 100K nt:          38 (90.48 %)
-# contigs > 1M nt:            4 (9.52 %)
-# N50                6008429
-# L50                2
-# N80                563548
-# L80                7
+# number of contigs:     38
+# total contigs length:  38632550
+# mean contig size:      1016646.05
+# contig size first quartile: 222180
+# median contig size:         338280
+# contig size third quartile: 555424
+# longest contig:             21678417
+# shortest contig:            119483
+# contigs > 500 nt:           38 (100.00 %)
+# contigs > 1K nt:            38 (100.00 %)
+# contigs > 10K nt:           38 (100.00 %)
+# contigs > 100K nt:          38 (100.00 %)
+# contigs > 1M nt:            6 (15.79 %)
+# N50                21678417
+# L50                1
+# N80                498193
+# L80                11
 ```
-In the D.melanogaster reference genome, 2L is 23.5Mbp. Somehow, we've picked up an extra 11.5Mb...
+In the D.melanogaster reference genome, 2R is 25Mb. Somehow, we've picked up an extra 13.5Mb...
 
 
 ## Purging haplodups with purge_dups
@@ -79,39 +79,39 @@ Haplotypic dupications are assembly artifacts that can occur in unphased genomes
 We can purge any potential haplotypic duplications from our hifiasm assembly. 
 ```
 cd $SCRATCH/BIOS424/lab_two
-sbatch scripts/submit_purgedups.sh
+sbatch scripts/submit_purgedups.sh #should take about 5 minutes
 ```
 
-After the job completes, there will be multiple files in the `purge/` directory. The relevant file for us is `2L.purged.fa`, which is our fasta file without haplodups. We can now check the size of our assembly again.
+After the job completes, there will be multiple files in the `purge/` directory. The relevant file for us is `2R.purged.fa`, which is our fasta file without haplodups. We can now check the size of our assembly again.
 ```
 cd $SCRATCH/BIOS424/lab_two
-gt seqstat purge/2L.purged.fa
+gt seqstat purge/2R.purged.fa
 ```
 (Hopefully) the `gt seqstat` output looks like:
 ```
-# number of contigs:     25
-# total contigs length:  27447083
-# mean contig size:      1097883.32
-# contig size first quartile: 124935
-# median contig size:         193511
-# contig size third quartile: 294027
-# longest contig:             15568587
-# shortest contig:            84909
-# contigs > 500 nt:           25 (100.00 %)
-# contigs > 1K nt:            25 (100.00 %)
-# contigs > 10K nt:           25 (100.00 %)
-# contigs > 100K nt:          21 (84.00 %)
-# contigs > 1M nt:            3 (12.00 %)
-# N50                15568587
+# number of contigs:     23
+# total contigs length:  31973739
+# mean contig size:      1390162.57
+# contig size first quartile: 274879
+# median contig size:         445479
+# contig size third quartile: 652358
+# longest contig:             21678417
+# shortest contig:            160806
+# contigs > 500 nt:           23 (100.00 %)
+# contigs > 1K nt:            23 (100.00 %)
+# contigs > 10K nt:           23 (100.00 %)
+# contigs > 100K nt:          23 (100.00 %)
+# contigs > 1M nt:            4 (17.39 %)
+# N50                21678417
 # L50                1
-# N80                2747760
-# L80                3
+# N80                652358
+# L80                5
 ```
-Now, we've dropped about 7.5Mb of sequence from erroneous haplodups. There is still 4Mb more sequence than compared to the reference, but it's possible that we could have assembled a bunch of challenging regions that the reference genome (first assembled in 2014) could not.
+Now, we've dropped about 7Mb of sequence from erroneous haplodups. There is still a lot more sequence than compared to the reference, but it's possible that we could have assembled a bunch of challenging regions that the reference genome (first assembled in 2014) could not. It's also possible that isolated reads are aligning poorly, and that some of the contigs in our assembly are bogus. Notice how our largest contig is more than 21Mb, which is really excellent.
 
 ## Scaffolding contigs with RagTag
 
-We now have a number of contigs. If our data had been high-enough quality, we could have potentially already assembled the full 2L chromosome. However, we can see that our largest contig is still only 15Mb, which is well short of the known chromosome length. Now we will assembly our chromosomes into scaffolds. We don't have any more data to use (like Hi-C), so we have to scaffold against the reference D.melanogaster genome. Unfortunately, this means that our assembly will no longer be truly "de novo", but we were able to assemble large chunks of the chromosome de novo. To scaffold, we will use the program RagTag.
+We now have a number of contigs. If our data had been high-enough quality, we could have potentially already assembled the full 2R chromosome. However, we can see that our largest contig is still only XXMb, which is well short of the known chromosome length. Now we will assembly our chromosomes into scaffolds. We don't have any more data to use (like Hi-C), so we have to scaffold against the reference D.melanogaster genome. Unfortunately, this means that our assembly will no longer be truly "de novo", but we were able to assemble large chunks of the chromosome de novo. To scaffold, we will use the program RagTag.
 
 First we have to download the reference D.melanogaster assembly. (You can check its stats the same way we've checked our fasta files. Notice that there are a huge number of contigs. These are all small fragments that are part of the genome, but its unclear where they should be assembled.)
 ```
@@ -120,62 +120,58 @@ wget -O-  https://ftp.flybase.net/genomes/Drosophila_melanogaster/dmel_r6.58_FB2
 Now we can run ragtag
 ```
 cd $SCRATCH/BIOS424/lab_two
-sbatch scripts/submit_ragtag.sh
+sbatch scripts/submit_ragtag.sh # Should take like a minute
 ```
-The ragtag output will be in the `ragtag/` directory. The file we care about is `2L.scaffolded.fasta`. We can check the stats of the scaffolded assembly, and we should find that there are only a few contigs, with one being extremely long. The stats should look like:
+The ragtag output will be in the `ragtag/` directory. The file we care about is `2R.scaffolded.fasta`. We can check the stats of the scaffolded assembly, and we should find that there are only a few contigs, with one being extremely long. The stats should look like:
 ```
-# number of contigs:     11
-# total contigs length:  27448483
-# mean contig size:      2495316.64
-# contig size first quartile: 193563
-# median contig size:         470274
-# contig size third quartile: 728259
-# longest contig:             23922314
-# shortest contig:            84909
-# contigs > 500 nt:           11 (100.00 %)
-# contigs > 1K nt:            11 (100.00 %)
-# contigs > 10K nt:           11 (100.00 %)
-# contigs > 100K nt:          9 (81.82 %)
-# contigs > 1M nt:            1 (9.09 %)
-# N50                23922314
+# number of contigs:     7
+# total contigs length:  31975339
+# mean contig size:      4567905.57
+# contig size first quartile: 1775251
+# median contig size:         1864736
+# contig size third quartile: 23340296
+# longest contig:             23340296
+# shortest contig:            652358
+# contigs > 500 nt:           7 (100.00 %)
+# contigs > 1K nt:            7 (100.00 %)
+# contigs > 10K nt:           7 (100.00 %)
+# contigs > 100K nt:          7 (100.00 %)
+# contigs > 1M nt:            6 (85.71 %)
+# N50                23340296
 # L50                1
-# N80                23922314
-# L80                1
+# N80                1864736
+# L80                3
 ```
-Our longest contig is 23.9Mb long, about .5MB longer than the reference 2L chromosome. We can double check that indeed RagTag aligned this contig to the 2L chromosome by looking at all of the contigs (which are now named by which reference contig they were scaffolded to). `samtools faidx` will create an index file for a fasta, which allows us to easily see contig lengths.
+We can double check that indeed RagTag aligned this contig to the 2R chromosome by looking at all of the contigs (which are now named by which reference contig they were scaffolded to). `samtools faidx` will create an index file for a fasta, which allows us to easily see contig lengths.
 ```
 cd $SCRATCH/BIOS424/lab_two/ragtag/
-samtools faidx 2L.scaffolded.fasta
-cut -f-2 2L.scaffolded.fasta.fai | sort -nrk 2
+samtools faidx 2R.scaffolded.fasta
+cut -f-2 2R.scaffolded.fasta.fai | sort -nrk 2
 ```
-This will output the bp length of each contig in `2L.scaffolded.fasta`:
+This will output the bp length of each contig in `2R.scaffolded.fasta`:
 ```
-2L	23922314
-3L	728259
-2R	719145
-3R	551615
-ptg000033l_1	470274
-X	426731
-ptg000001l_1	193563
-ptg000024l_1	136059
-3Cen_mapped_Scaffold_36_D1605	124935
-211000022280470	90679
-211000022278845	84909
+2R      23340296
+X       1931199
+3L      1864736
+2L      1775251
+ptg000007l_1    1214511
+3R      1196988
+ptg000028l_1    652358
 ```
-We can clearly see that our longest contig does in fact scaffold to 2L. Notice how we have 10 other smaller contigs that were scaffolded to other chromosomes/contigs in the D. melanogaster reference.
+We can clearly see that our longest contig does in fact scaffold to 2R. Notice how we have 6 other smaller contigs that were scaffolded to other chromosomes/contigs in the D. melanogaster reference.
 
-We can now use this assembly of 2L to call structural variants with assembly aligners. It's important to remember that while we have 10 other contigs in our fasta file as well, we know our reads are from 2L. We can further filter the fasta file to only include the sequence of 2L. We will use this fasta file for SV calling in the next part.
+We can now use this assembly of 2R to call structural variants with assembly aligners. It's important to remember that while we have 10 other contigs in our fasta file as well, we know our reads are from 2R. We can further filter the fasta file to only include the sequence of 2R. We will use this fasta file for SV calling in the next part.
 
 ```
 cd $SCRATCH/BIOS424/lab_two/
-samtools faidx ragtag/2L.scaffolded.fasta 2L > 2L.fasta
+samtools faidx ragtag/2R.scaffolded.fasta 2R > 2R.fasta
 ```
 
 ---
 
 ## Calling structural variants
 
-To call structural variants, we first need to make the read and assembly alignments. We will use the same set of reads we downloaded earlier as well as the 2L assembly we just made and align them to the same reference genome. We will use the program `minimap2` for both read alignment and assembly alignment. There are separate scripts for each alignment type.
+To call structural variants, we first need to make the read and assembly alignments. We will use the same set of reads we downloaded earlier as well as the 2R assembly we just made and align them to the same reference genome. We will use the program `minimap2` for both read alignment and assembly alignment. There are separate scripts for each alignment type.
 ```
 cd $SCRATCH/BIOS424/lab_two
 sbatch scripts/submit_read_alignment.sh
@@ -190,7 +186,7 @@ We need to give sniffles the bam file with our read alignments, as well as the r
 cd $SCRATCH/BIOS424/lab_two
 sbatch scripts/submit_sniffles.sh
 ```
-The resulting output, `2L.sniffles2.vcf` can be found in the `sniffles2` directory.
+The resulting output, `2R.sniffles2.vcf` can be found in the `sniffles2` directory.
 
 ### Calling SVs from assembly with svim-asm
 
@@ -199,4 +195,4 @@ We need to give svim-asm our assembly alignment and the reference assembly. We w
 cd $SCRATCH/BIOS424/lab_two
 sbatch scripts/submit_svim-asm.sh
 ```
-The output will be in `svim-asm/`, and we care about the file `2L.svim-asm.vcf`.
+The output will be in `svim-asm/`, and we care about the file `2R.svim-asm.vcf`.
