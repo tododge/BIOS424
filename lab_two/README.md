@@ -28,6 +28,7 @@ First on Sherlock, pull from github the updated version of this folder.
 ```
 cd $SCRATCH/BIOS424 #or wherever you cloned it last lab.
 git pull
+conda activate BIOS424
 ```
 Next, [download this fastq file](https://drive.google.com/file/d/1IkBvaqBol3XBv1x8wT8im7HeYMK-3yWK/view?usp=sharing), which holds the reads for one D. melanogaster chromosome (2R), and upload it to Sherlock.
 ```
