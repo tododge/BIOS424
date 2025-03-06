@@ -176,7 +176,7 @@ To call structural variants, we first need to make the read and assembly alignme
 ```
 cd $SCRATCH/BIOS424/lab_two
 sbatch scripts/submit_read_alignment.sh
-sbatch scripts/submit_assembly_alignment.sh
+sbatch scripts/submit_asm_alignment.sh
 ```
 Our output will be `.bam` files in the `alignments/` directory. I've also included the `.sam` file outputs as well, if you want to look at them, but they won't be used in the rest of the workflow.
 
