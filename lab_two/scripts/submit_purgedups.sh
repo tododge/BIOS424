@@ -9,10 +9,10 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
 
-. /home/users/jahemker/.bashrc
+. $HOME/.bashrc
 conda activate BIOS424
 
-prefix="2L"
+prefix="2R"
 draft="$SCRATCH/BIOS424/lab_two/assembly/${prefix}.hifiasm.bp.p_ctg.fasta"
 reads="$SCRATCH/BIOS424/lab_two/reads/${prefix}.fastq.gz"
 purge_dir="$SCRATCH/BIOS424/lab_two/purge"
