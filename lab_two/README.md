@@ -115,7 +115,7 @@ We now have a number of contigs. If our data had been high-enough quality, we co
 
 First we have to download the reference D.melanogaster assembly. (You can check its stats the same way we've checked our fasta files. Notice that there are a huge number of contigs. These are all small fragments that are part of the genome, but its unclear where they should be assembled.)
 ```
-wget -O-  https://ftp.flybase.net/genomes/Drosophila_melanogaster/dmel_r6.58_FB2024_03/fasta/dmel-all-chromosome-r6.58.fasta.gz | gunzip > D.melanogaster.fa.gz
+wget -O-  https://ftp.flybase.net/genomes/Drosophila_melanogaster/dmel_r6.58_FB2024_03/fasta/dmel-all-chromosome-r6.58.fasta.gz | gunzip > D.melanogaster.fa
 ```
 Now we can run ragtag
 ```
