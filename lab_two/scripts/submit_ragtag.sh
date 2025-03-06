@@ -4,15 +4,15 @@
 #SBATCH --partition=normal,hns,dpetrov,owners
 #SBATCH --mail-type=BEGIN,END,FAIL
 
-#SBATCH --time=30:00:00
+#SBATCH --time=30:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=8G
 
-. /home/users/jahemker/.bashrc
-conda activate genometools
+. $HOME/.bashrc
+conda activate BIOS424
 
-prefix="2L"
+prefix="2R"
 ragtag_dir="$SCRATCH/BIOS424/lab_two/ragtag"
 reference="D.melanogaster.fa"
 query="$SCRATCH/BIOS424/lab_two/purge/${prefix}.purged.fa"
