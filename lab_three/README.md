@@ -72,3 +72,18 @@ We can see how many insertions there are by using the same `wc -l` command as be
 ```
 grep -c "SVTYPE=INS" dmel.sniffles.2R.vcf
 ```
+Alternatively, we can filter out all insertion calls by using the `-e` flag instead of the `-i` flag. (exclude vs include)
+```
+bcftools view -e 'SVTYPE="INS"' dmel.sniffles.2R.vcf | less
+```
+We can filter by any of the tags in the `INFO` field with bcftools. Let's filter by the length of variants, getting only large ones.
+```
+bcftools view -i 'SVLEN > 10000' dmel.sniffles.2R.vcf | less
+# We can count the different types of variants by piping that command into grep
+bcftools view -i 'SVLEN > 10000' dmel.sniffles.2R.vcf | grep -c "SVTYPE=INS"
+```
+If we do this for deletions, we will get a count of 0. This isn't necessarily because there are 0 deletions, but because of a quirk that all deletion lengths are written as negative numbers. Our bcftools command will automatically filter out all deletions. We need to modify it to keep extremely large (magnitude) negative numbers.
+```
+bcftools view -i 'SVLEN > 10000 | SVLEN < -10000' dmel.sniffles.2R.vcf | grep -c "SVTYPE=DEL"
+# should get 16 large deletions.
+```
