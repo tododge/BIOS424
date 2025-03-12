@@ -87,3 +87,14 @@ If we do this for deletions, we will get a count of 0. This isn't necessarily be
 bcftools view -i 'SVLEN > 10000 | SVLEN < -10000' dmel.sniffles.2R.vcf | grep -c "SVTYPE=DEL"
 # should get 16 large deletions.
 ```
+---
+## Visualizing SVs
+
+We can visualize SVs by looking at the read alignments against a reference genome using a program such as [IGV](https://igv.org/) or [Jbrowse2](https://jbrowse.org/jb2/). IGV has been around longer, and has a lot of features, but I don't think it works that well for long reads and visualizing structural variants. I think Jbrowse2 does a better job showing split mapped reads and stuff like that. Jbrowse2 requires a reference fasta file, the file index, and a bam file and the bam index. 
+
+
+---
+Installing mummer
+```
+mamba install bioconda::mummer4
+```
