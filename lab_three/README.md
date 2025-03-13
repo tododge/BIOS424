@@ -8,11 +8,7 @@ cd $SCRATCH/BIOS424 #or wherever you cloned it last lab.
 git pull
 conda activate BIOS424
 ```
-Upload the dummy data:
-```
-#you may have to change the first part depending on where you downloaded the file to
-scp [change this james] [suid]@dtn.sherlock.stanford.edu:$SCRATCH/BIOS424/lab_three/reads
-```
+
 To look at and manipulate the vcfs, we will use a tool developed by Heng Li and co. called `bcftools`, which is included in the conda environment. Another useful command for quickly parsing VCFs is the bash command `grep`, which searches files or text for a given string or pattern.
 
 The format of VCFs is described in detail here: https://samtools.github.io/hts-specs/VCFv4.5.pdf. Historically, VCFs were used for SNP data, but they have more recently been used to also store information on structural variants. There are some quirks with this, as obviously SVs are much more complex than SNPs.
