@@ -2,12 +2,6 @@
 
 In today's lab we will be exploring structural variant calls. We will first walkthrough the variant calling file (VCF) format. We will then see how we can manipulate and get statistics from VCFs. We will visualize some SVs using Jbrowse2. 
 
-We will download some dummy data for lab today:
-
-[reads?]
-
-[alignments]
-
 First, pull the newest version of the repo from github to Sherlock.
 ```
 cd $SCRATCH/BIOS424 #or wherever you cloned it last lab.
@@ -89,9 +83,10 @@ bcftools view -i 'SVLEN > 10000 | SVLEN < -10000' dmel.sniffles.2R.vcf | grep -c
 ```
 ---
 ## Visualizing SVs
+### With Jbrowse2
+We can visualize SVs by looking at the read alignments against a reference genome using a program such as [IGV](https://igv.org/) or [Jbrowse2](https://jbrowse.org/jb2/). IGV has been around longer, and has a lot of features, but I don't think it works that well for long reads and visualizing structural variants. I think Jbrowse2 does a better job showing split mapped reads and stuff like that. Jbrowse2 requires a [reference fasta file](https://drive.google.com/file/d/1USMwJnD1jDjFSCfobywCHcDnaGkrtD04/view?usp=drive_link), [the file index](https://drive.google.com/file/d/1XyE0Y1MasaNLRIfSnQQDp2Sd2huTBMFZ/view?usp=drive_link), and a [bam file](https://drive.google.com/file/d/1U6wcP8zk-AUCseO6Io6EEGOiAiqMfpM_/view?usp=drive_link) and the [bam index](https://drive.google.com/file/d/1AgrIq7tlN3mjAja2iRhVSEfxADXLzRbt/view?usp=drive_link). 
 
-We can visualize SVs by looking at the read alignments against a reference genome using a program such as [IGV](https://igv.org/) or [Jbrowse2](https://jbrowse.org/jb2/). IGV has been around longer, and has a lot of features, but I don't think it works that well for long reads and visualizing structural variants. I think Jbrowse2 does a better job showing split mapped reads and stuff like that. Jbrowse2 requires a reference fasta file, the file index, and a bam file and the bam index. 
-
+I'm going to demonstrate using Jbrowse2 in class. You are welcome to download it on your computer, along with the dummy data provided, or you can download your own if you have it.
 
 ---
 Installing mummer
