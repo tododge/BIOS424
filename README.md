@@ -77,11 +77,12 @@ In lab we will work on learning how to run these programs on Sherlock.
 For detailed steps, refer to the readme in the `lab_two/` folder.
 
 ## Lab 3 - Structural variant QC and analysis
-In this final lab, we will be looking at our SV calls that we generated in the previous lab. We will manually verify SVs looking at read alignments. We will perform some basic analyses with our VCFs.
+In this final lab, we will be looking at our SV calls that we generated in the previous lab. We will manually verify SVs looking at read alignments. We will perform some basic analyses with our VCFs. We will also look for differences between more complex regions of the genome.
 
-- Input: structural variant calls (VCFs), alignment files (BAM files)
+- Input: assembly graphs, structural variant calls (VCFs), alignment files (BAM files, mummer files)
 - Output: Various plots/analyses
 
 - Programs:
-  - JBrowse2 and/or IGV for looking at alignments
-  - R?
+  - JBrowse2 for looking at alignments
+  - Bandage for looking at assemblies
+  - mummer/R for aligning and visualizing differences genomes
