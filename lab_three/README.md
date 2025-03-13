@@ -84,8 +84,31 @@ We can visualize SVs by looking at the read alignments against a reference genom
 
 I'm going to demonstrate using Jbrowse2 in class. You are welcome to download it on your computer, along with the dummy data provided, or you can download your own if you have it.
 
+## Visualizing complex SVs from assemblies
+
+As we've talked about in class, SVs can be complex and challenging to represent in vcf format. Here are some things you can do when dealing with situations like this. As an example, we'll explore variation at a locus linked with a pigmentation trait in swordtail fish, which displays considerable complexity.
+
+### With Bandage
+[Bandage](https://github.com/rrwick/Bandage) is a great tool to visualize assembly graphs. In calss I'll walk through a newly generated swordtail near-T2T genome, but given the size of the graph (diploid assembly + extra = 1.5Gb for swordtails), it's not available. Feel free to follow along with your own data. Bandage is most easily used on your personal computer.
+
+In addition to providing an easy way to check the stats of your assembly graph and look for breaks/tangles, Bandage can implement blast searches. This is very useful if you have regions of interest you want to check. You can use genes or other elements to "barcode" your assembly graph, if you know what you think it should look like. I will show three examples here...
+
+### With Mummer
+Mummer is a pairwise aligner that works very well and fairly rapidly. It can be installed with conda.
+
 ---
 Installing mummer
 ```
 mamba install bioconda::mummer4
 ```
+
+We'll be aligning these two sequences: [chr-13_h1.fa.gz](https://drive.google.com/file/d/1YNrMawPyc5IXFJLHtuA6Pdoi-6TMdHLx/view?usp=drive_link) and [chr-13_ref.fa.gz](https://drive.google.com/file/d/1QIlv7PRWHD2x9IIF44qfX40wD5qvjlOd/view?usp=drive_link). We'll be using a bash script that takes
+
+---
+Running the script
+```
+gunzip chr-13*fa.gz
+sbatch sub_mummer_ref_asm.sh chr-13_ref.fa.gz chr-13_h1.fa.gz
+```
+
+The coords file can then be visualized using the provided R script. This is probably easiest on your laptop. The R script contains a function to plot the coordinates, which you can easily modify for your purposes.
